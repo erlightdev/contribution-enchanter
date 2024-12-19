@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 interface GeneratorFormProps {
@@ -9,7 +11,7 @@ interface GeneratorFormProps {
   setFrequency: (value: number) => void;
   intensity: number;
   setIntensity: (value: number) => void;
-  onGenerate: (repoUrl: string) => void;
+  onGenerate: (repoUrl: string, urlType: 'https' | 'ssh') => void;
 }
 
 const GeneratorForm: React.FC<GeneratorFormProps> = ({
@@ -20,6 +22,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
   onGenerate,
 }) => {
   const [repoUrl, setRepoUrl] = useState('');
+  const [urlType, setUrlType] = useState<'https' | 'ssh'>('https');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +30,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
       toast.error("Please enter a repository URL");
       return;
     }
-    onGenerate(repoUrl);
+    onGenerate(repoUrl, urlType);
     toast.success("Commands copied to clipboard!");
   };
 
@@ -39,11 +42,28 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
         </label>
         <Input
           type="url"
-          placeholder="https://github.com/username/repository"
+          placeholder={urlType === 'https' 
+            ? "https://github.com/username/repository"
+            : "git@github.com:username/repository.git"}
           value={repoUrl}
           onChange={(e) => setRepoUrl(e.target.value)}
           className="w-full"
         />
+        <RadioGroup
+          defaultValue="https"
+          value={urlType}
+          onValueChange={(value) => setUrlType(value as 'https' | 'ssh')}
+          className="flex space-x-4"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="https" id="https" />
+            <Label htmlFor="https">HTTPS</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="ssh" id="ssh" />
+            <Label htmlFor="ssh">SSH</Label>
+          </div>
+        </RadioGroup>
       </div>
 
       <div className="space-y-4">

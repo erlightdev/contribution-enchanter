@@ -6,9 +6,10 @@ interface CommandOutputProps {
   frequency: number;
   intensity: number;
   repoUrl: string;
+  urlType: 'https' | 'ssh';
 }
 
-const CommandOutput: React.FC<CommandOutputProps> = ({ frequency, intensity, repoUrl }) => {
+const CommandOutput: React.FC<CommandOutputProps> = ({ frequency, intensity, repoUrl, urlType }) => {
   const commands = `# Initialize repository
 git init
 

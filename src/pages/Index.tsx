@@ -9,9 +9,11 @@ const Index = () => {
   const [intensity, setIntensity] = useState(10);
   const [showCommands, setShowCommands] = useState(false);
   const [repoUrl, setRepoUrl] = useState('');
+  const [urlType, setUrlType] = useState<'https' | 'ssh'>('https');
 
-  const handleGenerate = (url: string) => {
+  const handleGenerate = (url: string, type: 'https' | 'ssh') => {
     setRepoUrl(url);
+    setUrlType(type);
     setShowCommands(true);
   };
 
@@ -46,6 +48,7 @@ const Index = () => {
                   frequency={frequency} 
                   intensity={intensity}
                   repoUrl={repoUrl}
+                  urlType={urlType}
                 />
                 <p className="text-sm text-muted-foreground">
                   ⚠️ Disclaimer: This tool is for educational purposes only. Using it to deceive others about your contributions is not recommended.
