@@ -5,9 +5,10 @@ import { Copy } from "lucide-react";
 interface CommandOutputProps {
   frequency: number;
   intensity: number;
+  repoUrl: string;
 }
 
-const CommandOutput: React.FC<CommandOutputProps> = ({ frequency, intensity }) => {
+const CommandOutput: React.FC<CommandOutputProps> = ({ frequency, intensity, repoUrl }) => {
   const commands = `# Initialize repository
 git init
 
@@ -46,7 +47,7 @@ chmod +x generate.sh
 ./generate.sh
 
 # Push to GitHub
-git remote add origin <your-repository-url>
+git remote add origin ${repoUrl}
 git branch -M main
 git push -u origin main`;
 

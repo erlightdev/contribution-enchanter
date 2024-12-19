@@ -8,8 +8,10 @@ const Index = () => {
   const [frequency, setFrequency] = useState(0.6);
   const [intensity, setIntensity] = useState(10);
   const [showCommands, setShowCommands] = useState(false);
+  const [repoUrl, setRepoUrl] = useState('');
 
-  const handleGenerate = () => {
+  const handleGenerate = (url: string) => {
+    setRepoUrl(url);
     setShowCommands(true);
   };
 
@@ -40,7 +42,11 @@ const Index = () => {
             {showCommands && (
               <div className="space-y-4">
                 <h2 className="text-xl font-semibold">Generated Commands</h2>
-                <CommandOutput frequency={frequency} intensity={intensity} />
+                <CommandOutput 
+                  frequency={frequency} 
+                  intensity={intensity}
+                  repoUrl={repoUrl}
+                />
                 <p className="text-sm text-muted-foreground">
                   ⚠️ Disclaimer: This tool is for educational purposes only. Using it to deceive others about your contributions is not recommended.
                 </p>

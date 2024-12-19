@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
 interface GeneratorFormProps {
@@ -8,7 +9,7 @@ interface GeneratorFormProps {
   setFrequency: (value: number) => void;
   intensity: number;
   setIntensity: (value: number) => void;
-  onGenerate: () => void;
+  onGenerate: (repoUrl: string) => void;
 }
 
 const GeneratorForm: React.FC<GeneratorFormProps> = ({
@@ -18,8 +19,33 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
   setIntensity,
   onGenerate,
 }) => {
+  const [repoUrl, setRepoUrl] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!repoUrl) {
+      toast.error("Please enter a repository URL");
+      return;
+    }
+    onGenerate(repoUrl);
+    toast.success("Commands copied to clipboard!");
+  };
+
   return (
-    <div className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="space-y-4">
+        <label className="block text-sm font-medium">
+          GitHub Repository URL
+        </label>
+        <Input
+          type="url"
+          placeholder="https://github.com/username/repository"
+          value={repoUrl}
+          onChange={(e) => setRepoUrl(e.target.value)}
+          className="w-full"
+        />
+      </div>
+
       <div className="space-y-4">
         <label className="block text-sm font-medium">
           Frequency (% of days with commits)
@@ -52,16 +78,10 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
         </span>
       </div>
 
-      <Button 
-        onClick={() => {
-          onGenerate();
-          toast.success("Commands copied to clipboard!");
-        }}
-        className="w-full"
-      >
+      <Button type="submit" className="w-full">
         Generate Commands
       </Button>
-    </div>
+    </form>
   );
 };
 
